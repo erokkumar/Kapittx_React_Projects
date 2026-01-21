@@ -4,7 +4,7 @@ import ShowDetailPage from "./pages/ShowDetailPage";
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/Kapittx_React_Projects">
       <Routes>
         <Route path="/" element={<SchedulePage />} />
         <Route path="/show/:id" element={<ShowDetailPage />} />
