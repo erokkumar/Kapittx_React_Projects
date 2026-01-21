@@ -2,8 +2,6 @@
 
 A premium, modern web application designed to track and view TV schedules in real-time. Built with **React** and **Vite**, this application features a sleek "Cyberpunk-lite" dark aesthetic and integrates with the **TVMaze API** to provide up-to-date show information.
 
-![TV Scheduler Preview](https://via.placeholder.com/800x400.png?text=App+Preview)
-
 ## ✨ Features
 
 - **📅 Live Schedule:** View a list of currently airing TV shows in the US.
@@ -72,15 +70,3 @@ src/
 ├── index.css       # Global Styles & Design System
 └── main.jsx        # Entry point
 ```
-
-## 🤝 Contributing
-
-1. Fork the project
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
----
-
-Developed with ❤️ by **Kapittx**
