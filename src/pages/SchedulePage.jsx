@@ -1,42 +1,44 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { fetchSchedule } from "../api/tvmaze";
+import ShowCard from "../components/ShowCard";
 
 function SchedulePage() {
-    const [shows, setShows] = useState([]);
-    const [loading, setLoading] = useState(true);
+  const [shows, setShows] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        fetchSchedule()
-            .then(data => {
-                setShows(data);
-                setLoading(false);
-            })
-            .catch(err => {
-                console.error(err);
-                setLoading(false);
-            });
-    }, []);
+  useEffect(() => {
+    fetchSchedule()
+      .then(data => {
+        setShows(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setLoading(false);
+      });
+  }, []);
 
-    if (loading) return <p>Loading...</p>;
+  if (loading) return <div className="container"><p>Loading Schedule...</p></div>;
 
-    return (
-        <div>
-            <h2>Currently Airing Shows (US)</h2>
+  return (
+    <div>
+      <nav className="nav-header">
+        <div className="logo">Kapittx</div>
+      </nav>
 
-            {shows.slice(0, 20).map(item => (
-                <div key={item.id}>
-                    <p>
-                        <b>
-                            <Link to={`/show/${item.show.id}`}>{item.show.name}</Link>
-                        </b>
-                    </p>
-                    <p>Time: {item.airtime}</p>
-                    <hr />
-                </div>
-            ))}
+      <div className="container">
+        <div className="grid-layout">
+          {shows.slice(0, 24).map(item => (
+            <ShowCard
+              key={item.id}
+              show={item.show}
+              airtime={item.airtime}
+            />
+          ))}
         </div>
-    );
+      </div>
+    </div>
+  );
 }
 
 export default SchedulePage;

@@ -1,35 +1,61 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { fetchShowDetails } from "../api/tvmaze";
 
 function ShowDetailPage() {
     const { id } = useParams();
+    const navigate = useNavigate();
     const [show, setShow] = useState(null);
-    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetchShowDetails(id)
-            .then(data => {
-                setShow(data);
-                setLoading(false);
-            })
-            .catch(err => {
-                console.error(err);
-                setLoading(false);
-            });
+            .then(data => setShow(data))
+            .catch(err => console.error(err));
     }, [id]);
 
-    if (loading) return <p>Loading...</p>;
-    if (!show) return <p>Show not found</p>;
+    if (!show) return <div className="container"><p>Loading Show Details...</p></div>;
+
+    const imageUrl = show.image?.original || show.image?.medium;
 
     return (
-        <div>
-            <Link to="/" style={{ textDecoration: 'none', color: '#666' }}>&larr; Back</Link>
-            <h1>{show.name}</h1>
-            {show.image && <img src={show.image.medium} alt={show.name} />}
-            <div dangerouslySetInnerHTML={{ __html: show.summary }} />
-            <p><b>Language:</b> {show.language}</p>
-            <p><b>Genres:</b> {show.genres.join(", ")}</p>
+        <div className="container">
+            <button className="btn-back" onClick={() => navigate("/")}>
+                ← Back to Schedule
+            </button>
+
+            <div className="detail-hero">
+                {imageUrl && (
+                    <img
+                        src={imageUrl}
+                        alt={show.name}
+                        className="poster-img"
+                    />
+                )}
+
+                <div className="detail-content">
+                    <h1>{show.name}</h1>
+
+                    <div style={{ display: 'flex', gap: '12px', marginBottom: '20px', flexWrap: 'wrap' }}>
+                        <span className="meta-tag" style={{ background: 'var(--accent-color)' }}>
+                            {show.rating?.average || "N/A"} ★
+                        </span>
+                        <span className="meta-tag">{show.language}</span>
+                        {show.genres?.map(g => (
+                            <span key={g} className="meta-tag">{g}</span>
+                        ))}
+                    </div>
+
+                    <div
+                        dangerouslySetInnerHTML={{ __html: show.summary }}
+                        style={{ color: '#ccc', fontSize: '1.1rem', lineHeight: '1.7' }}
+                    />
+
+                    <div style={{ marginTop: '24px', opacity: 0.7 }}>
+                        <p><strong>Status:</strong> {show.status}</p>
+                        <p><strong>Network:</strong> {show.network?.name || show.webChannel?.name || 'N/A'}</p>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }
